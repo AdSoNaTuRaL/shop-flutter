@@ -27,4 +27,19 @@ class Products with ChangeNotifier {
     ));
     notifyListeners();
   }
+
+  bool updateProduct(Product product) {
+    if (product == null || product.id == null) {
+      return false;
+    }
+
+    final index = _items.indexWhere((prod) => prod.id == product.id);
+
+    if (index >= 0) {
+      _items[index] = product;
+      notifyListeners();
+    }
+
+    return true;
+  }
 }

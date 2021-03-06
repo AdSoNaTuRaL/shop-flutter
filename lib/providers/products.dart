@@ -28,9 +28,9 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
-  bool updateProduct(Product product) {
+  void updateProduct(Product product) {
     if (product == null || product.id == null) {
-      return false;
+      return;
     }
 
     final index = _items.indexWhere((prod) => prod.id == product.id);
@@ -39,7 +39,14 @@ class Products with ChangeNotifier {
       _items[index] = product;
       notifyListeners();
     }
+  }
 
-    return true;
+  void deleteProduct(String id) {
+    final index = _items.indexWhere((prod) => prod.id == id);
+
+    if (index >= 0) {
+      _items.removeWhere((prod) => prod.id == id);
+      notifyListeners();
+    }
   }
 }

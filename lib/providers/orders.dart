@@ -32,7 +32,7 @@ class Orders with ChangeNotifier {
     _items.insert(
       0,
       Order(
-        id: Random().nextBool().toString(),
+        id: Random().nextDouble().toString(),
         amount: total,
         date: DateTime.now(),
         products: products,

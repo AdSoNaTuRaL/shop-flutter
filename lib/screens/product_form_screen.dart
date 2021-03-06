@@ -17,10 +17,29 @@ class _ProductFormState extends State<ProductForm> {
   final _formData = Map<String, Object>();
 
   void _updateImageUrl() {
-    setState(() {});
+    if (isImageUrlValid(_imageUrlController.text)) {
+      setState(() {});
+    }
+  }
+
+  bool isImageUrlValid(String url) {
+    bool isProtocolValid = url.toLowerCase().startsWith('http://') ||
+        url.toLowerCase().startsWith('https://');
+
+    bool isEndExtensionValid = url.toLowerCase().endsWith('.png') ||
+        url.toLowerCase().endsWith('.jpg') ||
+        url.toLowerCase().endsWith('.jpeg');
+
+    return isProtocolValid && isEndExtensionValid;
   }
 
   void _saveForm() {
+    bool isValid = _formGlobalKey.currentState.validate();
+
+    if (!isValid) {
+      return;
+    }
+
     _formGlobalKey.currentState.save();
     final product = Product(
       id: Random().nextDouble().toString(),
@@ -70,6 +89,13 @@ class _ProductFormState extends State<ProductForm> {
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(_priceFocusNode),
                 onSaved: (value) => _formData['title'] = value,
+                validator: (value) {
+                  if (value.trim().isEmpty || value.trim().length < 3) {
+                    return 'Informe um título válido com no minimo 3 letras';
+                  }
+
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Preço'),
@@ -79,6 +105,14 @@ class _ProductFormState extends State<ProductForm> {
                     FocusScope.of(context).requestFocus(_descriptionFocusNode),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onSaved: (value) => _formData['price'] = double.parse(value),
+                validator: (value) {
+                  var parsedPrice = double.parse(value);
+                  if (value.trim().isEmpty || parsedPrice == null || parsedPrice <= 0) {
+                    return 'Informe um preço válido';
+                  }
+
+                  return null;
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Descrição'),
@@ -86,6 +120,13 @@ class _ProductFormState extends State<ProductForm> {
                 keyboardType: TextInputType.multiline,
                 focusNode: _descriptionFocusNode,
                 onSaved: (value) => _formData['description'] = value,
+                validator: (value) {
+                  if (value.trim().isEmpty || value.trim().length < 10) {
+                    return 'Informe um descrição válida com no minimo 10 letras';
+                  }
+
+                  return null;
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -97,6 +138,13 @@ class _ProductFormState extends State<ProductForm> {
                       textInputAction: TextInputAction.done,
                       focusNode: _imageUrlFocusNode,
                       controller: _imageUrlController,
+                      validator: (value) {
+                        if (value.trim().isEmpty || !isImageUrlValid(value)) {
+                          return 'Informe uma URL válida';
+                        }
+
+                        return null;
+                      },
                       onSaved: (value) => _formData['imageUrl'] = value,
                       onFieldSubmitted: (_) {
                         _saveForm();

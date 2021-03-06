@@ -32,7 +32,7 @@ class CartItemWidget extends StatelessWidget {
         return showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('Tem certeza?'),
+            title: Text('Remover Item'),
             content: Text('Quer remover o item do carrinho?'),
             actions: [
               FlatButton(

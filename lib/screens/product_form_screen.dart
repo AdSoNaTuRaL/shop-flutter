@@ -34,7 +34,7 @@ class _ProductFormState extends State<ProductForm> {
     return isProtocolValid && isEndExtensionValid;
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     bool isValid = _formGlobalKey.currentState.validate();
 
     if (!isValid) {
@@ -57,12 +57,28 @@ class _ProductFormState extends State<ProductForm> {
     final products = Provider.of<Products>(context, listen: false);
 
     if (_formData['id'] == null) {
-      products.addProduct(product).then((_) {
+      try {
+        await products.addProduct(product);
+      } catch (e) {
+        await showDialog<Null>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('Ocorreu um erro'),
+            content: Text('Ocorreu um erro ao tentar salvar o produto'),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Ok'),
+              ),
+            ],
+          ),
+        );
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
     } else {
       products.updateProduct(product);
       setState(() {

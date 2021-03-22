@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/config.dart';
-import 'package:shop/data/dummy_data.dart';
 import 'package:shop/providers/product.dart';
 
 class Products with ChangeNotifier {
-  List<Product> _items = DUMMY_PRODUCTS;
+  List<Product> _items = [];
 
   List<Product> get items => [..._items];
 
@@ -17,6 +16,29 @@ class Products with ChangeNotifier {
 
   List<Product> get favoriteItems {
     return _items.where((product) => product.isFavorite).toList();
+  }
+
+  Future<void> loadProducts() async {
+    final response = await http.get(URL);
+    Map<String, dynamic> data = json.decode(response.body);
+
+    if (data == null) return;
+
+    _items.clear();
+    
+    data.forEach((key, value) {
+      _items.add(
+        Product(
+          id: key,
+          title: value['title'],
+          description: value['description'],
+          price: value['price'],
+          imageUrl: value['imageUrl'],
+          isFavorite: value['isFavorite'],
+        ),
+      );
+    });
+    notifyListeners();
   }
 
   Future<void> addProduct(Product product) async {
@@ -32,7 +54,7 @@ class Products with ChangeNotifier {
         'isFavorite': product.isFavorite,
       }),
     );
-    
+
     _items.add(
       Product(
         id: json.decode(response.body)['name'],

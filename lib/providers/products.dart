@@ -19,10 +19,10 @@ class Products with ChangeNotifier {
     return _items.where((product) => product.isFavorite).toList();
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     const url = URL;
 
-    return http.post(
+    final response = await http.post(
       url,
       body: json.encode({
         'title': product.title,
@@ -31,18 +31,18 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'isFavorite': product.isFavorite,
       }),
-    ).then((response) {
-      _items.add(
-        Product(
-          id: json.decode(response.body)['name'],
-          title: product.title,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-        ),
-      );
-      notifyListeners();
-    });
+    );
+    
+    _items.add(
+      Product(
+        id: json.decode(response.body)['name'],
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      ),
+    );
+    notifyListeners();
   }
 
   void updateProduct(Product product) {

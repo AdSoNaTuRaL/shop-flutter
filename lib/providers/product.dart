@@ -30,7 +30,7 @@ class Product with ChangeNotifier {
 
     try {
       final response = await http.patch(
-        '$BASE_URL/$id.json',
+        '$BASE_URL/products/$id.json',
         body: json.encode({
           'isFavorite': isFavorite,
         }),

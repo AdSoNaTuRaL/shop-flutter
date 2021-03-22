@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop/config.dart';
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/providers/product.dart';
 
@@ -20,8 +20,7 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    const url =
-        'https://flutter-shop-adsonatural-default-rtdb.firebaseio.com/products.json';
+    const url = URL;
 
     http
         .post(

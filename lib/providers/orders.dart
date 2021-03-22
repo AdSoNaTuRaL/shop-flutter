@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -39,13 +38,15 @@ class Orders with ChangeNotifier {
       body: json.encode({
         'amount': cart.totalAmount,
         'date': date.toIso8601String(),
-        'products': cart.items.values.map((cartItem) => {
-          'id': cartItem.id,
-          'productId': cartItem.productId,
-          'title': cartItem.title,
-          'quantity': cartItem.quantity,
-          'price': cartItem.price,
-        }).toList(),
+        'products': cart.items.values
+            .map((cartItem) => {
+                  'id': cartItem.id,
+                  'productId': cartItem.productId,
+                  'title': cartItem.title,
+                  'quantity': cartItem.quantity,
+                  'price': cartItem.price,
+                })
+            .toList(),
       }),
     );
 
@@ -60,5 +61,36 @@ class Orders with ChangeNotifier {
     );
 
     notifyListeners();
+  }
+
+  Future<void> loadOrders() async {
+    final loadedItems = [];
+    final response = await http.get('$BASE_URL/orders.json');
+    Map<String, dynamic> data = json.decode(response.body);
+
+    if (data != null) {
+      data.forEach((orderId, orderData) {
+        loadedItems.add(
+          Order(
+            id: orderId,
+            amount: orderData['amount'],
+            date: DateTime.parse(orderData['date']),
+            products: (orderData['products'] as List<dynamic>).map((item) {
+              return CartItem(
+                id: item['id'],
+                price: item['price'],
+                productId: item['productId'],
+                quantity: item['quantity'],
+                title: item['title'],
+              );
+            }).toList(),
+          ),
+        );
+      });
+      notifyListeners();  
+    }
+
+    _items = loadedItems.reversed.toList();
+    return Future.value();
   }
 }

@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shop/data/dummy_data.dart';
 import 'package:shop/providers/product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = DUMMY_PRODUCTS;
 
-  List<Product> get items => [ ..._items ];
+  List<Product> get items => [..._items];
 
   int get itemsCount {
     return _items.length;
@@ -18,14 +20,32 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    _items.add(Product(
-      id: Random().nextDouble().toString(),
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl
-    ));
-    notifyListeners();
+    const url =
+        'https://flutter-shop-adsonatural-default-rtdb.firebaseio.com/products.json';
+
+    http
+        .post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'description': product.description,
+        'price': product.price,
+        'imageUrl': product.imageUrl,
+        'isFavorite': product.isFavorite,
+      }),
+    )
+        .then((response) {
+      _items.add(
+        Product(
+          id: json.decode(response.body)['name'],
+          title: product.title,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+        ),
+      );
+      notifyListeners();
+    });
   }
 
   void updateProduct(Product product) {

@@ -19,11 +19,10 @@ class Products with ChangeNotifier {
     return _items.where((product) => product.isFavorite).toList();
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url = URL;
 
-    http
-        .post(
+    return http.post(
       url,
       body: json.encode({
         'title': product.title,
@@ -32,8 +31,7 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'isFavorite': product.isFavorite,
       }),
-    )
-        .then((response) {
+    ).then((response) {
       _items.add(
         Product(
           id: json.decode(response.body)['name'],

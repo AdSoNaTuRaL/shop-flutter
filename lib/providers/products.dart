@@ -8,6 +8,9 @@ import 'package:shop/providers/product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
+  String _token;
+
+  Products(this._token, this._items);
 
   List<Product> get items => [..._items];
 
@@ -20,7 +23,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> loadProducts() async {
-    final response = await http.get('$BASE_URL/products.json');
+    final response = await http.get('$BASE_URL/products.json?auth=$_token');
     Map<String, dynamic> data = json.decode(response.body);
 
     if (data == null) return;
@@ -43,10 +46,9 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = '$BASE_URL/products.json';
 
     final response = await http.post(
-      url,
+      '$BASE_URL/products.json?auth=$_token',
       body: json.encode({
         'title': product.title,
         'description': product.description,
@@ -77,7 +79,7 @@ class Products with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        '$BASE_URL/products/${product.id}.json',
+        '$BASE_URL/products/${product.id}.json?auth=$_token',
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -98,7 +100,7 @@ class Products with ChangeNotifier {
       _items.remove(product);
       notifyListeners();
 
-      final response = await http.delete('$BASE_URL/products/${product.id}.json');
+      final response = await http.delete('$BASE_URL/products/${product.id}.json?auth=$_token');
 
       if (response.statusCode >= 400) {
         _items.insert(index, product);

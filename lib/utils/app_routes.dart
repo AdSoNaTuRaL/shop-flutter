@@ -1,8 +1,8 @@
 class AppRoutes {
-  static final HOME = '/';
-  static final PRODUCT_DETAIL = '/product-detail';
-  static final CART = '/cart';
-  static final ORDERS = '/orders';
-  static final PRODUCTS = '/products';
-  static final PRODUCT_FORM = '/product-form';
+  static final home = '/';
+  static final productDetail = '/product-detail';
+  static final cart = '/cart';
+  static final orders = '/orders';
+  static final products = '/products';
+  static final productForm = '/product-form';
 }

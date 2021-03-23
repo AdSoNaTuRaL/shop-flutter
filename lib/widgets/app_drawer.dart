@@ -15,7 +15,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.shop),
             title: Text('Loja'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(AppRoutes.HOME);
+              Navigator.of(context).pushReplacementNamed(AppRoutes.home);
             },
           ),
           Divider(),
@@ -23,7 +23,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.payment),
             title: Text('Pedidos'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(AppRoutes.ORDERS);
+              Navigator.of(context).pushReplacementNamed(AppRoutes.orders);
             },
           ),
           Divider(),
@@ -31,7 +31,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.edit),
             title: Text('Gerenciar Produtos'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(AppRoutes.PRODUCTS);
+              Navigator.of(context).pushReplacementNamed(AppRoutes.products);
             },
           ),
         ],

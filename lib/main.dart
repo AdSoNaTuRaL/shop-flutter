@@ -38,12 +38,12 @@ class MyApp extends StatelessWidget {
         ),
         // home: ProductOverviewScreen(),
         routes: {
-          AppRoutes.HOME: (ctx) => ProductOverviewScreen(),
-          AppRoutes.CART: (ctx) => CartScreen(),
-          AppRoutes.ORDERS: (ctx) => OrdersScreen(),
-          AppRoutes.PRODUCTS: (ctx) => ProductsScreen(),
-          AppRoutes.PRODUCT_FORM: (ctx) => ProductForm(),
-          AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
+          AppRoutes.home: (ctx) => ProductOverviewScreen(),
+          AppRoutes.cart: (ctx) => CartScreen(),
+          AppRoutes.orders: (ctx) => OrdersScreen(),
+          AppRoutes.products: (ctx) => ProductsScreen(),
+          AppRoutes.productForm: (ctx) => ProductForm(),
+          AppRoutes.productDetail: (ctx) => ProductDetailScreen(),
         },
       ),
     );

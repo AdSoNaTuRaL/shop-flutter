@@ -1,6 +1,5 @@
 class AppRoutes {
   static final authHome = '/';
-  static final home = '/home';
   static final productDetail = '/product-detail';
   static final cart = '/cart';
   static final orders = '/orders';

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop/config.dart';
 import 'package:shop/exceptions/firebase_exception.dart';
+import 'package:shop/utils/store.dart';
 
 class Auth with ChangeNotifier {
   String _userId;
@@ -52,6 +53,12 @@ class Auth with ChangeNotifier {
         ),
       );
 
+      await Store.saveMap('userData', {
+        'token': _token,
+        'userId': _userId,
+        'expireDate': _expireDate.toIso8601String(),
+      });
+
       _autoLogout();
       notifyListeners();
     }
@@ -81,6 +88,12 @@ class Auth with ChangeNotifier {
         ),
       );
 
+      await Store.saveMap('userData', {
+        'token': _token,
+        'userId': _userId,
+        'expireDate': _expireDate.toIso8601String(),
+      });
+
       _autoLogout();
       notifyListeners();
     }
@@ -96,6 +109,7 @@ class Auth with ChangeNotifier {
       _logoutTimer.cancel();
       _logoutTimer = null;
     }
+    Store.remove('userData');
     notifyListeners();
   }
 
@@ -105,5 +119,25 @@ class Auth with ChangeNotifier {
     }
     final timeToLogout = _expireDate.difference(DateTime.now()).inSeconds;
     _logoutTimer = Timer(Duration(seconds: timeToLogout), logout);
+  }
+
+  Future<void> autoLogin() async {
+    if(isAuth) return Future.value();
+
+    final userData = await Store.getMapString('userData');
+
+    if (userData == null) return Future.value();
+
+    final expireDate = DateTime.parse(userData['expireDate']);
+
+    if (expireDate.isBefore(DateTime.now())) return Future.value();
+
+    _userId = userData['userId'];
+    _token = userData['token'];
+    _expireDate = expireDate;
+
+    _autoLogout();
+    notifyListeners();
+    return Future.value();
   }
 }

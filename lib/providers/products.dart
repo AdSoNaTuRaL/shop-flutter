@@ -9,8 +9,9 @@ import 'package:shop/providers/product.dart';
 class Products with ChangeNotifier {
   List<Product> _items = [];
   String _token;
+  String _userId;
 
-  Products(this._token, this._items);
+  Products([this._token, this._items = const [], this._userId]);
 
   List<Product> get items => [..._items];
 
@@ -24,6 +25,9 @@ class Products with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final response = await http.get('$BASE_URL/products.json?auth=$_token');
+    final favResponse = await http.get('$BASE_URL/userFavorites/$_userId.json?auth=$_token');
+    final favMap = json.decode(favResponse.body);
+
     Map<String, dynamic> data = json.decode(response.body);
 
     if (data == null) return;
@@ -31,6 +35,7 @@ class Products with ChangeNotifier {
     _items.clear();
 
     data.forEach((key, value) {
+      final isFavorite = favMap == null ? false : favMap[key] ?? false;
       _items.add(
         Product(
           id: key,
@@ -38,7 +43,7 @@ class Products with ChangeNotifier {
           description: value['description'],
           price: value['price'],
           imageUrl: value['imageUrl'],
-          isFavorite: value['isFavorite'],
+          isFavorite: isFavorite,
         ),
       );
     });
@@ -54,7 +59,6 @@ class Products with ChangeNotifier {
         'description': product.description,
         'price': product.price,
         'imageUrl': product.imageUrl,
-        'isFavorite': product.isFavorite,
       }),
     );
 

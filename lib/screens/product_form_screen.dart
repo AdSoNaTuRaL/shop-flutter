@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/providers/product.dart';
 import 'package:shop/providers/products.dart';
+import 'package:shop/utils/app_routes.dart';
 
 class ProductForm extends StatefulWidget {
   @override
@@ -60,9 +61,9 @@ class _ProductFormState extends State<ProductForm> {
       if (_formData['id'] == null) {
         await products.addProduct(product);
       } else {
-        products.updateProduct(product);
+        await products.updateProduct(product);
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).popAndPushNamed(AppRoutes.products);
     } catch (e) {
       await showDialog<Null>(
         context: context,

@@ -11,6 +11,7 @@ import 'package:shop/screens/product_detail_screen.dart';
 import 'package:shop/screens/product_form_screen.dart';
 import 'package:shop/screens/products_screen.dart';
 import 'package:shop/utils/app_routes.dart';
+import 'package:shop/utils/custom_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,6 +44,12 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: {
+              TargetPlatform.android: CustomPageTransitionBuilder(),
+              TargetPlatform.iOS: CustomPageTransitionBuilder(),
+            }
+          ),
         ),
         // home: ProductOverviewScreen(),
         routes: {

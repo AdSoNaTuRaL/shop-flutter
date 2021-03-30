@@ -46,7 +46,7 @@ $ cd shop-flutter/ && code .
 # Run to get the packages
 $ flutter pub get
 ```
-- Create a ```config.dart``` file in root project directory and fill it with your credentials/information
+- Create a ```config.dart``` file in lib project directory and fill it with your credentials/information
 ```dart
 const BASE_URL = 'https://yourFirebaseUrl.firebaseio.com';
 const BASE_URL_AUTH_SIGNUP = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=yourToken';

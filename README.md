@@ -1,6 +1,6 @@
 <div align="center">
    <h1>Shop</h1>
-   <h4>A simple flutter project designed to learn even more about flutter concepts, such as animations, firebase, other widgets and other things</h4>
+   <h4>Simple flutter project designed to learn even more about flutter concepts, such as animations, firebase, other widgets and other things</h4>
 </div>
 
 <br/>

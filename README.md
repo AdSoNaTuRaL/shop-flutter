@@ -32,7 +32,7 @@ A few resources to get you started if this is your first Flutter project:
 
 <br/>
 
-### :construction_worker: How to Run (after install flutter)
+### :construction_worker: How to Run
 - Start with :star: in this repo and clone it.
 ```bash
 # Clone Repository

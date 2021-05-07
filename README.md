@@ -38,7 +38,7 @@ A few resources to get you started if this is your first Flutter project:
 # Clone Repository
 $ git clone https://github.com/AdSoNaTuRaL/shop-flutter.git
 ```
-- 🆚️ Open the project in VSCode and get packages.
+- Open the project in VSCode and get packages.
 ```bash
 # Go to project folder and open on VSCode
 $ cd shop-flutter/ && code .
